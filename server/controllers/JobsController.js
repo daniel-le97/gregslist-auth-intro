@@ -1,7 +1,6 @@
 import { Auth0Provider } from "@bcwdev/auth0provider";
 import { jobsService } from "../services/JobsService.js";
 import BaseController from "../utils/BaseController.js";
-
 export class JobsController extends BaseController {
   constructor() {
     super("api/jobs");
@@ -10,17 +9,26 @@ export class JobsController extends BaseController {
       .get("/:jobId", this.getJob)
       .use(Auth0Provider.getAuthorizedUserInfo) //must be logged in to use these features after;
       .post("", this.addJob)
-      .put('/:id', this.editJob);
+      .put("/:id", this.editJob)
+      .delete("/:id", this.deleteJob);
   }
 
-  async editJob(req, res, next){
-  try{
-    const job = await jobsService.editJob(req.body, req.userInfo)
-    res.send(job)
-  } 
-  catch (error) {
-  next(error)
+  async deleteJob(req, res, next) {
+    try {
+      const job = await jobsService.deleteJob(req.body, req.userInfo);
+      res.send("listing deleted");
+    } catch (error) {
+      next(error);
+    }
   }
+
+  async editJob(req, res, next) {
+    try {
+      const job = await jobsService.editJob(req.body, req.userInfo);
+      res.send(job);
+    } catch (error) {
+      next(error);
+    }
   }
 
   async addJob(req, res, next) {

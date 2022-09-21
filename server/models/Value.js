@@ -5,7 +5,7 @@ export const ValueSchema = new Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    creatorId: { type: Schema.Types.ObjectId, ref: 'Profile', required: true }
+    creatorId: { type: Schema.Types.ObjectId, ref: 'Account', required: true }
   },
   { timestamps: true, toJSON: { virtuals: true } }
 )
@@ -14,5 +14,5 @@ ValueSchema.virtual('creator', {
   localField: 'creatorId',
   foreignField: '_id',
   justOne: true,
-  ref: 'Profile'
+  ref: 'Account'
 })

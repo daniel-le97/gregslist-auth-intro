@@ -11,7 +11,16 @@ export class CarsController extends BaseController {
       // NO KNIGHT GETS BELOW THIS LINE WITHOUT GOING THROUGH THIS CHECKPOINT
       .use(Auth0Provider.getAuthorizedUserInfo) // MIDDLEWARE are you logged in
       .post("", this.manufactureCar)
-      .put("/:id", this.editCar);
+      .put("/:id", this.editCar)
+      .delete("/:id", this.deleteCar);
+  }
+  async deleteCar(req, res, next) {
+    try {
+      const car = await carsService.deleteCar(req.body, req.userInfo);
+      res.send("car deleted");
+    } catch (error) {
+      next(error);
+    }
   }
 
   async getCars(req, res, next) {
